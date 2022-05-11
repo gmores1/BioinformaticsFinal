@@ -7,6 +7,9 @@ Created on Tue May 10 22:07:04 2022
 """
 
 import random, sys, matplotlib.pyplot as plt
+
+sys.argv = [0,0,0,0,0,0,0,0,0,0,0]
+
 class orca:
     population = None
     birthRate = None
@@ -19,14 +22,19 @@ class orca:
     def summarize(self):
         print("The orca population is %f, with a birth rate of %f and a death rate of %f." % (self.population, self.birthRate, self.deathRate))
 
-### Set values for penguin population, birth rate, and death rate. ###
-orcaPop = random.randint(1,20)
-orcaBirth = random.random()
-orcaDeath = random.random()
-#sys.argv for birth rate and death rate
-#use 0 to flag whether the user wants to use a random value or input value
-orcaValue1 = orca(orcaPop, orcaBirth, orcaDeath)
-orcaValue1.summarize()
+### Set values for orca population, birth rate, and death rate. ###
+if sys.argv[1] != 0:
+    orcaPop = int(sys.argv[1])
+    orcaBirth = float(sys.argv[2])
+    orcaDeath = float(sys.argv[3])
+else:
+    orcaPop = random.randint(1,20)
+    orcaBirth = random.random()
+    orcaDeath = random.random()
+    #sys.argv for birth rate and death rate
+    #use 0 to flag whether the user wants to use a random value or input value
+    orcaValue1 = orca(orcaPop, orcaBirth, orcaDeath)
+    orcaValue1.summarize()
 
 class seal:
     population = None
@@ -41,11 +49,16 @@ class seal:
         print("The seal population is %f, with a birth rate of %f and a death rate of %f." % (self.population, self.birthRate, self.deathRate))
 
 ### Set values for seal population, birth rate, and death rate. ###
-sealPop = random.randint(10,100)
-sealBirth = random.random()
-sealDeath = random.random()
-sealValue1 = seal(sealPop, sealBirth, sealDeath)
-sealValue1.summarize()
+if sys.argv[4] != 0:
+    sealPop = int(sys.argv[4])
+    sealBirth = float(sys.argv[5])
+    sealDeath = float(sys.argv[6])
+else:
+    sealPop = random.randint(10,100)
+    sealBirth = random.random()
+    sealDeath = random.random()
+    sealValue1 = seal(sealPop, sealBirth, sealDeath)
+    sealValue1.summarize()
 
 class penguin:
     population = None
@@ -60,11 +73,16 @@ class penguin:
         print("The penguin population is %f, with a birth rate of %f and a death rate of %f." % (self.population, self.birthRate, self.deathRate))
 
 ### Set values for penguin population, birth rate, and death rate. ###
-penguinPop = random.randint(40,200)
-penguinBirth = random.random()
-penguinDeath = random.random()
-penguinValue1 = penguin(penguinPop, penguinBirth, penguinDeath)
-penguinValue1.summarize()
+if sys.argv[7] != 0:
+    penguinPop = int(sys.argv[7])
+    penguinPop = float(sys.argv[8])
+    penguinPop = float(sys.argv[9])
+else:
+    penguinPop = random.randint(40,200)
+    penguinBirth = random.random()
+    penguinDeath = random.random()
+    penguinValue1 = penguin(penguinPop, penguinBirth, penguinDeath)
+    penguinValue1.summarize()
 
 ### Create arrays to store population values from each time step. ###
 t = []
@@ -77,8 +95,12 @@ penguinChange = 0
 
 
 ### Define maximum carrying capacity of the study environment, along with desired times of measurement ###
-time_step = 0.01
-max_time = 90
+if sys.argv[10] != 0:
+    time_step = sys.argv[10]
+    max_time = sys.argv[11]
+else:
+    time_step = 0.01
+    max_time = 90
 carrying_capacity = 100*min(orcaValue1.deathRate, sealValue1.deathRate, penguinValue1.deathRate)
 
 ### Functions that change the population of each organism based on birth and death rates. ###
@@ -116,13 +138,13 @@ for i in range (1, max_time):
     
     i = i+1
 
+print(t, sealData, orcaData, penguinData)
+
 ### Graph the results of population change over time ###
 
 def graph(t, sealData, orcaData, penguinData):
     #Orca Population
-    x1 = [t]
-    y1 = [orcaData]
-    plt.plot(x1, y1)
+    plt.plot([t], [orcaData])
     plt.xlabel("Generations")
     plt.ylabel("Population")
     plt.title("Orca Population")
@@ -150,9 +172,10 @@ def graph(t, sealData, orcaData, penguinData):
     plt.title("Average Populations in a Predator-Prey Food Chain")
     plt.xlabel("Generations")
     plt.ylabel("Population")
-    plt.gca().legend(('y1','y2','y3'))
+    plt.gca().legend(('orcas','seals','penguins'))
     plt.plot(x, y1, "-r", label ="Orcas")
     plt.plot(x, y2, "-b", label ="Seals")
     plt.plot(x, y3, "-g", label ="Penguins")
+    plt.show()
 
 graph(time, sealData, orcaData, penguinData)
